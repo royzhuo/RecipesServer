@@ -69,7 +69,7 @@ public class ActiveMq1 {
      */
     public static ConnectionFactory createConnectionFactory(){
         connectionFactory=
-                new ActiveMQConnectionFactory(ActiveMQConnectionFactory.DEFAULT_USER,ActiveMQConnectionFactory.DEFAULT_PASSWORD,ActiveMQConnectionFactory.DEFAULT_BROKER_URL);
+                new ActiveMQConnectionFactory(ActiveMQConnectionFactory.DEFAULT_USER,ActiveMQConnectionFactory.DEFAULT_PASSWORD,ActiveMQConnectionFactory.DEFAULT_BROKER_BIND_URL);
         return connectionFactory;
     }
 
@@ -89,7 +89,7 @@ public class ActiveMq1 {
 
     /*创建消息目标,就是消息发送和接受的地点，要么queue，要么topic*/
     public static Destination createDestination() throws JMSException {
-        destination=session.createQueue("queue1");
+        destination=session.createQueue("queue111");
         return destination;
     }
 

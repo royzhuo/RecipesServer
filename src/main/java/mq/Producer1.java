@@ -14,7 +14,7 @@ import java.util.Objects;
 public class Producer1 {
 
     public static void main(String[] args) {
-        ConnectionFactory connectionFactory= new ActiveMQConnectionFactory("admin","admin",ActiveMQConnectionFactory.DEFAULT_BROKER_BIND_URL);
+        ConnectionFactory connectionFactory= new ActiveMQConnectionFactory("user","user",ActiveMQConnectionFactory.DEFAULT_BROKER_URL);
         Connection connection=null;
         try {
             connection=connectionFactory.createConnection();
@@ -24,7 +24,7 @@ public class Producer1 {
             MessageProducer messageProducer=session.createProducer(destination);
             messageProducer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
             TextMessage textMessage=new ActiveMQTextMessage();
-            textMessage.setText("hello activeqm qqqqqhhhhh3");
+            textMessage.setText("hello activeqm qqqqqhhhhh344444666");
             messageProducer.send(textMessage);
 
         } catch (JMSException e) {

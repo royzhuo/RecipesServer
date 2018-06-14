@@ -69,14 +69,15 @@ public class ActiveMq1 {
      */
     public static ConnectionFactory createConnectionFactory(){
         connectionFactory=
-                new ActiveMQConnectionFactory(ActiveMQConnectionFactory.DEFAULT_USER,ActiveMQConnectionFactory.DEFAULT_PASSWORD,ActiveMQConnectionFactory.DEFAULT_BROKER_BIND_URL);
+                new ActiveMQConnectionFactory(ActiveMqCustomer1.USER,ActiveMqCustomer1.PASSWORLD,ActiveMQConnectionFactory.DEFAULT_BROKER_BIND_URL);
         return connectionFactory;
     }
 
     /*创建connection连接。代表了应用程序和消息服务器之间的通信链路*/
     public static Connection createConnection() throws JMSException {
         connection=connectionFactory.createConnection();
-
+        //连接默认是关闭的，需要手动连接
+        connection.start();
         return connection;
     }
 

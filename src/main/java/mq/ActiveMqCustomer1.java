@@ -18,7 +18,8 @@ public class ActiveMqCustomer1 {
     public static Session session=null;
     public static Destination destination=null;
     public static MessageConsumer messageConsumer=null;
-
+    public static final String USER="admin";
+    public static final String PASSWORLD="admin";
     public static void main(String[] args) {
         System.out.println("username:"+ ActiveMQConnectionFactory.DEFAULT_USER+"  pwd:"+ActiveMQConnectionFactory.DEFAULT_PASSWORD+
                 " URL:"+ActiveMQConnectionFactory.DEFAULT_BROKER_BIND_URL);
@@ -71,20 +72,29 @@ public class ActiveMqCustomer1 {
      */
     public static ConnectionFactory createConnectionFactory(){
         connectionFactory=
-                new ActiveMQConnectionFactory(ActiveMQConnectionFactory.DEFAULT_USER,ActiveMQConnectionFactory.DEFAULT_PASSWORD,ActiveMQConnectionFactory.DEFAULT_BROKER_BIND_URL);
+                new ActiveMQConnectionFactory(USER,PASSWORLD,ActiveMQConnectionFactory.DEFAULT_BROKER_BIND_URL);
         return connectionFactory;
     }
 
     /*创建connection连接。代表了应用程序和消息服务器之间的通信链路*/
     public static Connection createConnection() throws JMSException {
         connection=connectionFactory.createConnection();
-
+        //连接默认是关闭的，需要手动连接
+        connection.start();
         return connection;
     }
 
     /*创建session上下文 实质上就是发送、接受消息的一个线程，因此生产者、消费者都是Session创建的,MessageProducer/MessageConsumer*/
     public static Session createSession() throws JMSException {
         /*形参:1.是否开启事物  2.签收模式 自动签收*/
+        /*
+        * 签收？通俗点说，就是消费者接受到消息后，需要告诉消息服务器，我收到消息了。当消息服务器收到回执后，本条消息将失效。因此签收将对PTP模式产生很大影响。如果消费者收到消息后，并不签收，那么本条消息继续有效，很可能会被其他消费者消费掉！
+        *
+        * AUTO_ACKNOWLEDGE：表示在消费者receive消息的时候自动的签收
+          CLIENT_ACKNOWLEDGE：表示消费者receive消息后必须手动的调用acknowledge()方法进行签收
+          DUPS_OK_ACKNOWLEDGE：签不签收无所谓了，只要消费者能够容忍重复的消息接受，当然这样会降低Session的开销
+        *CLIENT_ACKNOWLEDGE，采用手动的方式较自动的方式可能更好些，因为接收到了消息，并不意味着成功的处理了消息，假设我们采用手动签收的方式，只有在消息成功处理的前提下才进行签收，那么只要消息处理失败，那么消息还有效，仍然会继续消费，直至成功处理！
+        * */
         session=connection.createSession(true,Session.AUTO_ACKNOWLEDGE);
         return session;
     }

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--导入active公共资源-->
+    <import resource="activeMqCom.xml"/>
+    <!--配置消息生产者 spring提供了 JmsTemplate类来实现-->
+    <!--队列-->
+    <bean id="jtmQueue" class="org.springframework.jms.core.JmsTemplate">
+       <property name="connectionFactory" ref="pooledConnectionFactory"/>
+        <property name="defaultDestination" ref="springQueue"/>
+        <property name="receiveTimeout" value="10000"/>
+        <!--非pub/sub（发布/订阅）模式，即队列模式 -->
+        <property name="pubSubDomain" value="false"/>
+    </bean>
+
+    <!--主题-->
+    <bean id="jtmTopic" class="org.springframework.jms.core.JmsTemplate">
+        <property name="connectionFactory" ref="pooledConnectionFactory"/>
+        <property name="defaultDestination" ref="springTopic"/>
+        <property name="receiveTimeout" value="10000"/>
+        <!--非pub/sub（发布/订阅）模式，即队列模式 -->
+        <property name="pubSubDomain" value="true"/>
+    </bean>
+
+</beans>

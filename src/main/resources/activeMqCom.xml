@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:amq="http://activemq.apache.org/schema/core"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core.xsd">
+
+    <import resource="spring.xml"/>
+    <!--active连接工厂-->
+    <amq:connectionFactory id="amqConnectionFactory" brokerURL="tcp://127.0.0.1:61616" userName="admin" password="admin" />
+    <!--
+    spring连接工厂实例 用于管理emq连接工厂,只是用于spirng管理，正在连接到mq厂商的，还是mq厂商提供的连接对象
+    spring提供了SingleConnectionFactory和CachingConnectionFactory两个实现类
+    SingleConnectionFactory对于建立jms服务器链接的请求会一直返回同一个连接，且会忽略connection的close方法
+    CachingConnectionFactory继承了SingelConncetionFactory，所以它拥有SingLeConnectionFactory的所有功能，还提供了缓存session MessageProducer MessageConsumer的功能
+
+    -->
+    <bean id="targetConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+        <property name="brokerURL" value="tcp://127.0.0.1:61616"/>
+    </bean>
+
+    <!--activeMQ连接池   ActiveMQ为我们提供了一个PooledConnectionFactory，通过往里面注入一个ActiveMQConnectionFactory可以用来将Connection, Session和MessageProducer池化，这样可以大大的减少我们的资源消耗。    -->
+    <bean id="pooledConnectionFactory" class="org.apache.activemq.jms.pool.PooledConnectionFactory">
+        <property name="connectionFactory" ref="targetConnectionFactory"/>
+        <property name="maxConnections" value="10"/>
+    </bean>
+
+    <bean id="connectionFactory" class="org.springframework.jms.connection.SingleConnectionFactory">
+        <constructor-arg name="targetConnectionFactory" ref="pooledConnectionFactory"/>
+    </bean>
+
+    <!--配置消息队列和主题-->
+    <!--队列-->
+    <bean id="springQueue" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg value="springQueue1"/>
+    </bean>
+    <!--主题-->
+    <bean id="springTopic" class="org.apache.activemq.command.ActiveMQTopic">
+        <constructor-arg value="springTopic1"/>
+    </bean>
+
+
+
+</beans>

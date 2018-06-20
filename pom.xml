@@ -119,6 +119,17 @@
       <artifactId>activemq-spring</artifactId>
       <version>${active-spring.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.apache.activemq</groupId>
+      <artifactId>activemq-pool</artifactId>
+      <version>${active-spring.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.activemq</groupId>
+      <artifactId>activemq-all</artifactId>
+      <version>${active-spring.version}</version>
+    </dependency>
+
 
     <!--json-->
     <dependency>

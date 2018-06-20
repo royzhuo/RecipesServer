@@ -11,7 +11,6 @@
     spring提供了SingleConnectionFactory和CachingConnectionFactory两个实现类
     SingleConnectionFactory对于建立jms服务器链接的请求会一直返回同一个连接，且会忽略connection的close方法
     CachingConnectionFactory继承了SingelConncetionFactory，所以它拥有SingLeConnectionFactory的所有功能，还提供了缓存session MessageProducer MessageConsumer的功能
-
     -->
     <bean id="targetConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
         <property name="brokerURL" value="tcp://127.0.0.1:61616"/>

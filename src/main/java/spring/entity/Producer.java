@@ -13,7 +13,7 @@ import javax.jms.*;
  * Created by roy.zhuo on 2018/6/21.
  */
 
-@Component
+//@Component
 public class Producer {
 
     @Resource(name = "jtmQueue")

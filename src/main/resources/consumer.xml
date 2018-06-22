@@ -11,7 +11,11 @@
         <property name="destination" ref="springQueue"/>
         <!--写一个实现messageListener接口实例，注入到消息监听容器里面-->
         <property name="messageListener" ref="consumerService"/>
+        <!--sessionTransacted 可以对消息监听进行事物控制，如果消息接受执行失败jsm就会对接受的消息进行消息回滚操作。 对于像数据库访问控制等操作，不属于该事物控制。
+         要支持外部事物控制如（mysql）得配置一个支持外部事物的事物管理和支持外部事物管理的消息监听容器（如：DefaultMessageListenerContainer）-->
+        <property name="sessionTransacted" value="true"/>
     </bean>
+
 
     <!--主题-->
     <bean id="messageListenerContainerOfTopic" class="org.springframework.jms.listener.DefaultMessageListenerContainer" >
@@ -19,6 +23,18 @@
         <property name="destination" ref="springTopic"/>
         <!--写一个实现messageListener接口实例，注入到消息监听容器里面-->
         <property name="messageListener" ref="subService"/>
+        <!--sessionTransacted 可以对消息监听进行事物控制，如果消息接受执行失败jsm就会对接受的消息进行消息回滚操作。 对于像数据库访问控制等操作，不属于该事物控制。
+        要支持外部事物控制如（mysql）得配置一个支持外部事物的事物管理和支持外部事物管理的消息监听容器（如：DefaultMessageListenerContainer）-->
+        <property name="sessionTransacted" value="true"/>
+        <!--配置jtaTransactionManager，会让消息接受和数据库访问控制处于同一个事物，首先底层的JMSConnectionFactory需要能够支持分布式事物管理，
+        并正确的注册我们的配置jtaTransactionManager。这样消息接受和数据库访问控制会处于同一个事物控制，这样如果消息接收失败或者数据库访问失败都会进行消息回滚.
+
+        当消息监听容器配置了transactionManager时，消息监听容器将忽略sessionTransacted的值
+        -->
+        <property name="transactionManager" ref="jtaTransactionManager"/>
     </bean>
+
+
+    <bean id="jtaTransactionManager" class="org.springframework.transaction.jta.JtaTransactionManager"/>
 
 </beans>

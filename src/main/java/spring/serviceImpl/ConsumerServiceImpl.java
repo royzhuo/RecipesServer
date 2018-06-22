@@ -20,7 +20,7 @@ public class ConsumerServiceImpl implements ConsumerService {
             TextMessage textMessage=(TextMessage) message;
             try {
                 String text= textMessage.getText();
-                System.out.println("消费队列的消息："+text);
+                System.out.println("消费者消费了 消费队列的消息："+text);
             } catch (JMSException e) {
                 e.printStackTrace();
             }

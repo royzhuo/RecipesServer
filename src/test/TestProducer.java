@@ -16,10 +16,18 @@ public class TestProducer {
     @Autowired
     private Producer producer;
 
+
     @Test
     public void send(){
         for (int i=0;i<100;i++){
             producer.send(String.valueOf(i));
+        }
+    }
+
+    @Test
+    public void sendTopic(){
+        for (int i=0;i<100;i++){
+            producer.sendTopic(String.valueOf(i));
         }
     }
 }

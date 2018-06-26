@@ -11,6 +11,9 @@
        <property name="connectionFactory" ref="pooledConnectionFactory"/>
         <property name="defaultDestination" ref="springQueue"/>
         <property name="receiveTimeout" value="10000"/>
+        <!-- NON_PERSISTENT非持久化 1 ，PERSISTENT持久化 2 -->
+        <property name="deliveryMode" value="2"/>
+        <property name="sessionAcknowledgeModeName" value="AUTO_ACKNOWLEDGE"/>
         <!--非pub/sub（发布/订阅）模式，即队列模式 -->
         <property name="pubSubDomain" value="false"/>
     </bean>

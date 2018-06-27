@@ -31,7 +31,7 @@
 
         当消息监听容器配置了transactionManager时，消息监听容器将忽略sessionTransacted的值
         -->
-        <property name="transactionManager" ref="jmsTransactionManager"/>
+        <!--<property name="transactionManager" ref="jmsTransactionManager"/>-->
     </bean>
 
 
